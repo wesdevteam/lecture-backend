@@ -1,10 +1,10 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+import expressMongoSanitize from "@exortek/express-mongo-sanitize";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
-import mongoSanitize from "express-mongo-sanitize";
 import helmet from "helmet";
 import http from "http";
 import morgan from "morgan";
@@ -12,6 +12,7 @@ import morgan from "morgan";
 import initDB from "@/db/db.connect.js";
 import { globalErrorHandler } from "./middlewares/global-error-handler.middleware";
 import { globalRateLimiter } from "./middlewares/limiter.middleware";
+import { authRouter } from "./routes/auth/auth.route";
 
 const bootstrap = async () => {
   const app = express();
@@ -51,7 +52,7 @@ const bootstrap = async () => {
   app.use(express.json());
 
   // Prevent NoSQL Injection
-  app.use(mongoSanitize());
+  app.use(expressMongoSanitize());
 
   // Cookie parser
   app.use(cookieParser());
@@ -62,7 +63,16 @@ const bootstrap = async () => {
   });
 
   // Routes
-  // app.use("api", route);
+  app.use("/api/auth", authRouter);
+
+  // 404 handler: Invalid route
+  app.use((req, res) => {
+    res.status(404).json({
+      message: "Route Not Found",
+      path: req.originalUrl,
+      method: req.method,
+    });
+  });
 
   // Error handler
   app.use(globalErrorHandler);
