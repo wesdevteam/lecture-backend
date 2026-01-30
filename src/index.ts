@@ -1,10 +1,10 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+import expressMongoSanitize from "@exortek/express-mongo-sanitize";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
-import mongoSanitize from "express-mongo-sanitize";
 import helmet from "helmet";
 import http from "http";
 import morgan from "morgan";
@@ -51,7 +51,7 @@ const bootstrap = async () => {
   app.use(express.json());
 
   // Prevent NoSQL Injection
-  app.use(mongoSanitize());
+  app.use(expressMongoSanitize());
 
   // Cookie parser
   app.use(cookieParser());
