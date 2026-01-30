@@ -1,0 +1,19 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/**/*.ts"],
+  "out": "docs",
+  "readme": "none",
+
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeInternal": true,
+
+  "categorizeByGroup": true,
+  "sort": ["source-order"],
+
+  "gitRevision": "main",
+  "validation": {
+    "invalidLink": true,
+    "notExported": false
+  }
+}
